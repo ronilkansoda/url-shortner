@@ -1,5 +1,5 @@
 async function getData() {
-    const endpoint = "http://localhost:3000/api/post"
+    const endpoint = "http://loclhost:3000/api/post"
     const res = await fetch(endpoint);
 
     if (!res.ok) {
