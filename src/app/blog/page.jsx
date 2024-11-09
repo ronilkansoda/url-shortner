@@ -1,3 +1,4 @@
+'use client'
 import getDomain from "../lib/getDomain";
 
 async function getData() {
