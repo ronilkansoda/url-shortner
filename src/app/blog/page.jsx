@@ -5,12 +5,12 @@ async function getData() {
     const domain = getDomain();
     console.log(`${domain}/api/post`)
     const endpoint = `${domain}/api/post`
-    // const res = await fetch(endpoint, { next: { revalidate: 10 } });
-    const res = await fetch(endpoint, {
-        headers: { 'Content-Type': 'application/json' },
-        cache: 'no-store', // or use revalidate if you want to cache
-        // next: { revalidate: 10 } // alternative to cache: 'no-store'
-    });
+    const res = await fetch(endpoint, { next: { revalidate: 10 } });
+    // const res = await fetch(endpoint, {
+    //     headers: { 'Content-Type': 'application/json' },
+    //     cache: 'no-store', // or use revalidate if you want to cache
+    //     // next: { revalidate: 10 } // alternative to cache: 'no-store'
+    // });
 
     if (!res.ok) {
         throw new Error("Failed to fetch the data")
