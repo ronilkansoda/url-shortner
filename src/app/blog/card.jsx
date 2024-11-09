@@ -3,8 +3,9 @@
 import { useState } from "react"
 
 export default function Card({ title }) {
-    if (!title) { return <div>Empty</div> }
     const [count, setCount] = useState(0);
+    
+    if (!title) { return <div>Empty</div> }
 
     const handleClick = (e) => {
         e.preventDefault();
