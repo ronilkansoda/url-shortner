@@ -76,11 +76,11 @@ export default async function Page() {
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-2xl mx-auto px-4">
-                <h1 className="text-2xl font-bold mb-6 text-center">Blog Posts</h1>
+                <h1 className="text-stone-950 text-2xl font-bold mb-6 text-center">Blog Posts</h1>
 
                 {items.length === 0 ? (
                     <div className="text-center bg-white p-6 rounded-lg shadow">
-                        <p className="text-gray-600">No posts found</p>
+                        <p className="text-stone-950">No posts found</p>
                     </div>
                 ) : (
                     <div className="space-y-4">
@@ -89,7 +89,7 @@ export default async function Page() {
                                 key={item.id}
                                 className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow"
                             >
-                                <h2 className="text-xl font-semibold">{item.title}</h2>
+                                <h2 className="text-xl font-semibold text-stone-950">{item.title}</h2>
                             </div>
                         ))}
                     </div>
