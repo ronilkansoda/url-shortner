@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-export default function card({ title }) {
+export default function Card({ title }) {
     if (!title) { return <div>Empty</div> }
     const [count, setCount] = useState(0);
 

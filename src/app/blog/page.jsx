@@ -1,5 +1,5 @@
 import getDomain from "../lib/getDomain";
-import Card from "./card";
+import Card from "./Card";
 
 async function getData() {
     try {
