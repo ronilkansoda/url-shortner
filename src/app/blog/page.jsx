@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 import getDomain from "../lib/getDomain";
 
 async function getData() {
@@ -28,7 +28,7 @@ export default async function page() {
 
             {items.map((item) => (
                 <li key={item.id}>{item.title}</li>
-            ))}
+            ))} 
 
 
         </div>
