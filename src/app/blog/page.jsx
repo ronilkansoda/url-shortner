@@ -3,6 +3,7 @@ import getDomain from "../lib/getDomain";
 
 async function getData() {
     const domain = getDomain();
+    console.log(`${domain}/api/post`)
     const endpoint = `${domain}/api/post`
     const res = await fetch(endpoint, { next: { revalidate: 10 } });
 
