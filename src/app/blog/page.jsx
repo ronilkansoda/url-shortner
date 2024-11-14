@@ -1,5 +1,6 @@
 import getDomain from "../lib/getDomain";
 import Card from "./card";
+import { helloworld } from "../lib/db";
 
 async function getData() {
     try {
@@ -27,6 +28,8 @@ async function getData() {
 export default async function Page() {
     const data = await getData();
     const items = data?.items || [];
+    const dbHello = await helloworld();
+    console.log("dbHello", dbHello)
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -48,3 +51,6 @@ export default async function Page() {
         </div>
     );
 }
+
+export const runtime = 'edge'; // as default it is node.js
+export const preferredRegion = 'iad1'

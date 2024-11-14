@@ -22,6 +22,4 @@ export async function POST(req) {
         console.log(`Valid URL: ${url}`);  // Log valid URL
         return NextResponse.json(data, { status: 201 });
     }
-
-    return NextResponse.json(data, { status: 201 });
 }

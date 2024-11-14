@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^0.10.3",
     "next": "15.0.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
