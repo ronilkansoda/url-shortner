@@ -1,6 +1,5 @@
 {
     "dialect": "postgresql",
     "schema": "./src/app/lib/schema.js",
-    "out": "./src/migration",
-    "url": "postgres://neondb_owner:l8M7WBvfIUrm@ep-red-cloud-a50g5g9s.us-east-2.aws.neon.tech/neondb?sslmode=require&connect_timeout=10"
+    "out": "./src/migration"
 }
