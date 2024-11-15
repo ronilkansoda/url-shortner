@@ -1,7 +1,7 @@
 'use client';
 import { useState } from "react";
 
-export default function LinkCreateFoarm() {
+export default function LinkCreateFoarm({ didSubmit }) {
     const [results, setResults] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
 
@@ -32,6 +32,9 @@ export default function LinkCreateFoarm() {
             const result = await response.json();
             setResults(result);
             setErrorMessage(null);  // Reset error message on success
+            if (didSubmit) {
+                didSubmit(result)
+            }
         } catch (error) {
             setResults(null);  // Reset results on error
             setErrorMessage(error.message);  // Display error message
@@ -54,7 +57,7 @@ export default function LinkCreateFoarm() {
                     Shorten
                 </button>
             </form>
-            
+
             {results && <div>{JSON.stringify(results)}</div>}
             {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </div>
