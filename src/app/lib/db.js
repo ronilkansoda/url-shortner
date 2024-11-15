@@ -36,3 +36,9 @@ export async function addLink(url) {
     const newLinks = { url: url };
     return await db.insert(LinksTable).values(newLinks).returning();  // returning gives row added
 }
+
+export async function getLinks(limit, offset) {
+    const lookupLimit = limit ? limit : 10;
+    const lookupOffset = offset ? offset : 0;
+    return await db.select().from(LinksTable).limit(lookupLimit).offset(lookupOffset);
+}
