@@ -1,6 +1,7 @@
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { LinksTable } from "./schema";
+import { desc } from "drizzle-orm";
 
 
 const sql = neon(process.env.DATABASE_URL)
@@ -50,7 +51,7 @@ export async function getMinLinks(limit, offset) {
     return await db.select({
         id: LinksTable.id,
         url: LinksTable.url,
-        timestamp: LinksTable.createdAt,
+        createdAt: LinksTable.createdAt,
     }
-    ).from(LinksTable).limit(lookupLimit).offset(lookupOffset);
+    ).from(LinksTable).limit(lookupLimit).offset(lookupOffset).orderBy(desc(LinksTable.createdAt));
 }

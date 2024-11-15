@@ -5,8 +5,12 @@ import { getMinLinks } from "@/app/lib/db";
 
 
 export async function GET(req) {
-    const links = await getMinLinks();
-    return NextResponse.json(links, {status: 200});
+    try {
+        const links = await getMinLinks();
+        return NextResponse.json(links, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ message: "Error fetching links", error: error.message }, { status: 500 });
+    }
 }
 
 export async function POST(req) {
