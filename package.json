@@ -5,17 +5,20 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "migrations": "npx drizzle-kit generate",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.3",
+    "drizzle-orm": "^0.36.1",
     "next": "15.0.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "swr": "^2.2.5"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.28.1",
     "eslint": "^8",
     "eslint-config-next": "15.0.2",
     "postcss": "^8",
