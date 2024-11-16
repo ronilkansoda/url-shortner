@@ -51,6 +51,10 @@ export const getSessionUser = async () => {
     return extractedUserId;
 };
 
+export const endSessionForUser = async () => {
+    cookies().delete("session_id")
+}
+
 
 // async function verifySes() {
 //     const userId = "1"
