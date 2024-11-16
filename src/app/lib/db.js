@@ -1,7 +1,7 @@
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { desc, eq } from "drizzle-orm";
-import { LinksTable } from "./schema";
+import { LinksTable, VisitsTable } from "./schema";
 import randomShortString from "./randomShortString";
 
 
@@ -74,6 +74,9 @@ export async function getLinks(limit, offset) {
 }
 export async function getShortLinksRecord(shortSlugValue) {
     return await db.select().from(LinksTable).where(eq(LinksTable.short, shortSlugValue));
+}
+export async function saveLinkVisit(linkIdValues) {
+    return await db.insert(VisitsTable).values({ linkId: linkIdValues })
 }
 
 export async function getMinLinks(limit, offset) {
