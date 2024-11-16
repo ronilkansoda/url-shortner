@@ -2,7 +2,8 @@ import { cookies } from "next/headers";
 import * as jose from "jose";
 
 // Decoding and encoding session with JWT
-const secret = jose.base64url.decode(process.env.JOSE_SESSION_KEY);
+// const secret = jose.base64url.decode(process.env.JOSE_SESSION_KEY)
+const secret = new TextDecoder().encode(process.env.JOSE_SESSION_KEY);
 const issuer = 'urn:example:issuer';
 const audience = 'urn:example:audience';
 const expiresAt = '20s';
