@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1731677783455,
-      "tag": "0000_flaky_swordsman",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1731677839815,
-      "tag": "0001_clean_bloodstorm",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1731737119109,
-      "tag": "0002_sloppy_skreet",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1731751519480,
-      "tag": "0003_steep_kylun",
+      "when": 1731771827167,
+      "tag": "0000_cute_dragon_man",
       "breakpoints": true
     }
   ]

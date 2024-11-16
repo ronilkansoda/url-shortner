@@ -20,29 +20,46 @@ export async function helloworld() {
 }
 
 async function configureDatabase() {
-    try {
-        const [dbResponse] = await sql`CREATE TABLE IF NOT EXISTS "links" (
+
+    await sql`CREATE TABLE IF NOT EXISTS "links" (
+        	"id" serial PRIMARY KEY NOT NULL,
+        	"url" text NOT NULL,
+        	"short" varchar(50),
+        	"user_id" integer,
+        	"created_at" timestamp DEFAULT now()
+        );`
+
+    await sql`
+            CREATE TABLE IF NOT EXISTS "users"(
             "id" serial PRIMARY KEY NOT NULL,
-            "url" text NOT NULL,
-            "short" varchar(50),
+            "username" varchar(50) NOT NULL,
+            "password" text NOT NULL,
+            "email" text,
             "created_at" timestamp DEFAULT now()
         );`
-        await sql`CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "links" ((lower(url)));`
+    await sql`
+            CREATE TABLE IF NOT EXISTS "visits"(
+            "id" serial PRIMARY KEY NOT NULL,
+            "link_id" integer NOT NULL,
+            "created_at" timestamp DEFAULT now()
+        );`
+    await sql`
+            DO $$ BEGIN
+            ALTER TABLE "links" ADD CONSTRAINT "links_user_id_users_id_fk" FOREIGN KEY("user_id") REFERENCES "public"."users"       
+            ("id") ON DELETE no action ON UPDATE no action;
+            EXCEPTION
+            WHEN duplicate_object THEN null;
+            END $$;`
+    await sql`
+            DO $$ BEGIN
+            ALTER TABLE "visits" ADD CONSTRAINT "visits_link_id_links_id_fk" FOREIGN KEY("link_id") REFERENCES "public"."links"         ("id") ON DELETE no action ON UPDATE no action;
+            EXCEPTION
+            WHEN duplicate_object THEN null;
+            END $$;`
+    await sql`
+            CREATE UNIQUE INDEX IF NOT EXISTS "username_idx" ON "users" USING btree("username"); `
 
-        await sql`CREATE TABLE IF NOT EXISTS "visits" ("id" serial PRIMARY KEY NOT NULL,"link_id" integer NOT NULL,"created_at" timestamp DEFAULT now());`;
 
-        await sql`
-        DO $$ BEGIN
-        ALTER TABLE "visits" ADD CONSTRAINT "visits_link_id_links_id_fk" FOREIGN KEY("link_id") REFERENCES "public"."links"("id") ON DELETE no action ON UPDATE no action;
-        EXCEPTION
-        WHEN duplicate_object THEN null;
-        END $$;`
-
-
-
-    } catch (err) {
-        console.error("Database error during table creation: ", err);
-    }
 }
 
 
@@ -50,7 +67,12 @@ configureDatabase().catch(err => console.log("db config err ", err))
 
 export async function addLink(url) {
     const short = randomShortString();
+    const user = await getSessionUser();
     const newLinks = { url: url, short: short };
+    if (user) {
+        newLinks["userId"] = user;
+    }
+    console.log(newLinks)
     let response = [{ message: `${url} is not valid.Please try again` }];
     let responseStatus = 400;
 
@@ -65,7 +87,7 @@ export async function addLink(url) {
             responseStatus = 409;
         }
     }
-    console.log("Response:", response, "Status:", responseStatus);
+    // console.log("Response:", response, "Status:", responseStatus);
     return { data: response, status: responseStatus };
 }
 
@@ -101,6 +123,7 @@ export async function getMinLinksAndVisits(limit, offset) {
             id: true,
             url: true,
             short: true,
+            userId: true,
             createdAt: true,
         },
         with: {
