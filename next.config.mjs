@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import process from 'process/browser';  // Import process from 'process/browser'
+import process from 'process/browser.js'; // Import process from 'process/browser.js'
 
 const nextConfig = {
     webpack: (config) => {
@@ -10,14 +10,14 @@ const nextConfig = {
                 crypto: require.resolve("crypto-browserify"),
                 stream: require.resolve("stream-browserify"),
                 buffer: require.resolve("buffer"),
-                process: require.resolve("process/browser"), // Make sure this points to process/browser
+                process: require.resolve("process/browser.js"), // Correct the path here
             },
         };
 
         config.plugins.push(
             new webpack.ProvidePlugin({
                 Buffer: ["buffer", "Buffer"],
-                process: "process/browser",  // Ensure process is provided
+                process: "process/browser.js",  // Ensure process is provided correctly
             })
         );
 
