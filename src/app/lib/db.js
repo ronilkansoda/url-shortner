@@ -44,12 +44,15 @@ export async function addLink(url) {
     try {
         response = await db.insert(LinksTable).values(newLinks).returning();  // returning gives row added
         responseStatus = 201;
-    } catch ({ name, message }) {
-        console.log(name, message)
+    } catch (error) {
+        const message = error.message
+        const name = error.name
         if (`${message}`.includes("duplicate key value violates unique constraint")) {
-            response = [{ message: `${url} has already added. Please check the list` }]
+            response = { message: `${url} has already added. Please check the list` }
+            responseStatus = 409;
         }
     }
+    console.log("Response:", response, "Status:", responseStatus);
     return { data: response, status: responseStatus };
 }
 
