@@ -4,6 +4,7 @@ import { desc, eq, sql as sqld } from "drizzle-orm";
 import * as schema from './schema'
 import { LinksTable, VisitsTable } from "./schema";
 import randomShortString from "./randomShortString";
+import { getSessionUser } from "./session";
 
 
 const sql = neon(process.env.DATABASE_URL)
@@ -91,7 +92,7 @@ export async function getMinLinksAndVisits(limit, offset) {
     const lookupLimit = limit || 10;
     const lookupOffset = offset || 0;
 
-    console.log(db.query.LinksTable.findMany().toSQL());
+    // console.log(db.query.LinksTable.findMany().toSQL());
 
     return await db.query.LinksTable.findMany({
         limit: lookupLimit,
@@ -110,6 +111,6 @@ export async function getMinLinksAndVisits(limit, offset) {
                 }
             }
         }
-        
+
     });
 }

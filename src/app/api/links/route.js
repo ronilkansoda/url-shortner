@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import isValidURL from "@/app/lib/isValidUrl";
 import { addLink } from "@/app/lib/db";
 import { getMinLinksAndVisits } from "@/app/lib/db";
+import { setSessionUser } from "@/app/lib/session";
 
 
 export async function GET(req) {
     try {
+        await setSessionUser(1)
         const links = await getMinLinksAndVisits();
         return NextResponse.json(links, { status: 200 });
     } catch (error) {
