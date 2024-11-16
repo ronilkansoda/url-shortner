@@ -9,13 +9,14 @@ const nextConfig = {
                 crypto: "crypto-browserify",
                 stream: "stream-browserify",
                 buffer: "buffer",
+                process: "process/browser",  // Add this to resolve 'process/browser' issue
             },
         };
 
         config.plugins.push(
             new webpack.ProvidePlugin({
                 Buffer: ["buffer", "Buffer"],
-                process: "process/browser",
+                process: "process/browser",  // Provide process as a global
             })
         );
 
