@@ -1,4 +1,5 @@
-import webpack from "webpack";
+import webpack from 'webpack';
+import process from 'process/browser';  // Import process from 'process/browser'
 
 const nextConfig = {
     webpack: (config) => {
@@ -6,17 +7,17 @@ const nextConfig = {
             ...config.resolve,
             fallback: {
                 ...config.resolve.fallback,
-                crypto: "crypto-browserify",
-                stream: "stream-browserify",
-                buffer: "buffer",
-                process: "process/browser",  // Add this to resolve 'process/browser' issue
+                crypto: require.resolve("crypto-browserify"),
+                stream: require.resolve("stream-browserify"),
+                buffer: require.resolve("buffer"),
+                process: require.resolve("process/browser"), // Make sure this points to process/browser
             },
         };
 
         config.plugins.push(
             new webpack.ProvidePlugin({
                 Buffer: ["buffer", "Buffer"],
-                process: "process/browser",  // Provide process as a global
+                process: "process/browser",  // Ensure process is provided
             })
         );
 
