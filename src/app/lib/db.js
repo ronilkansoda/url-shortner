@@ -25,6 +25,7 @@ async function configureDatabase() {
             "short" varchar(50),
             "created_at" timestamp DEFAULT now()
         );`
+        await sql(`CREATE UNIQUE INDEX IF NOT EXISTS "url_idx" ON "links" ((lower(url)));`)
         console.log("Db response for new table: ", dbResponse);
     } catch (err) {
         console.error("Database error during table creation: ", err);
