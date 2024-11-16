@@ -1,13 +1,14 @@
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql as sqld } from "drizzle-orm";
+import * as schema from './schema'
 import { LinksTable, VisitsTable } from "./schema";
 import randomShortString from "./randomShortString";
 
 
 const sql = neon(process.env.DATABASE_URL)
 neonConfig.fetchConnectionCache = true;
-const db = drizzle(sql);
+const db = drizzle(sql, { schema });
 
 
 export async function helloworld() {
@@ -84,4 +85,31 @@ export async function getMinLinks(limit, offset) {
     const lookupOffset = offset ? offset : 0;
 
     return await db.select().from(LinksTable).limit(lookupLimit).offset(lookupOffset).orderBy(desc(LinksTable.createdAt));
+}
+
+export async function getMinLinksAndVisits(limit, offset) {
+    const lookupLimit = limit || 10;
+    const lookupOffset = offset || 0;
+
+    console.log(db.query.LinksTable.findMany().toSQL());
+
+    return await db.query.LinksTable.findMany({
+        limit: lookupLimit,
+        offset: lookupOffset,
+        columns: {
+            id: true,
+            url: true,
+            short: true,
+            createdAt: true,
+        },
+        with: {
+            visits: {
+                // limit: 5,
+                columns: {
+                    createdAt: true,
+                }
+            }
+        }
+        
+    });
 }

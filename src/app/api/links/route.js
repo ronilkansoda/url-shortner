@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import isValidURL from "@/app/lib/isValidUrl";
 import { addLink } from "@/app/lib/db";
-import { getMinLinks } from "@/app/lib/db";
+import { getMinLinksAndVisits } from "@/app/lib/db";
 
 
 export async function GET(req) {
     try {
-        const links = await getMinLinks();
+        const links = await getMinLinksAndVisits();
         return NextResponse.json(links, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: "Error fetching links", error: error.message }, { status: 500 });
