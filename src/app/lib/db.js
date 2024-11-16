@@ -1,6 +1,6 @@
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { LinksTable } from "./schema";
 import randomShortString from "./randomShortString";
 
@@ -44,6 +44,9 @@ export async function getLinks(limit, offset) {
     const lookupLimit = limit ? limit : 10;
     const lookupOffset = offset ? offset : 0;
     return await db.select().from(LinksTable).limit(lookupLimit).offset(lookupOffset);
+}
+export async function getShortLinksRecord(shortSlugValue) {
+    return await db.select().from(LinksTable).where(eq(LinksTable.short, shortSlugValue));
 }
 
 export async function getMinLinks(limit, offset) {
