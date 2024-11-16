@@ -114,6 +114,7 @@ export async function getMinLinks(limit, offset) {
 export async function getMinLinksAndVisits(limit, offset) {
     const lookupLimit = limit || 10;
     const lookupOffset = offset || 0;
+    const sessionUser = await getSessionUser();
 
     // console.log(db.query.LinksTable.findMany().toSQL());
 
@@ -127,6 +128,7 @@ export async function getMinLinksAndVisits(limit, offset) {
             userId: true,
             createdAt: true,
         },
+        where: eq(LinksTable.userId, sessionUser),
         with: {
             visits: {
                 // limit: 5,

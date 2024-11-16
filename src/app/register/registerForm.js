@@ -23,6 +23,12 @@ export default function RegisterForm({ didSubmit }) {
             if (didSubmit) {
                 didSubmit(result);
             }
+            if (result.message) {
+                setMessage(result.message)
+            }
+            if (response.status === 201) {
+                window.location.href = "/login"
+            }
         } catch (error) {
             setMessage("An error occurred. Please try again.");
         }
