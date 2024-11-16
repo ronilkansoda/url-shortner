@@ -1,17 +1,17 @@
-// import pbkdf2 from './pbkdf2'
-import { pbkdf2Sync } from 'node:crypto'
+import pbkdf2 from './pbkdf2'
 
 const saltKey = process.env.SALT_KEY ? process.env.SALT_KEY : 'salt'
 const hashIterations = 10000
 
+export const runtime = 'edge'
 
 export async function hashPassword(rawPasswordString) {
-    const key = pbkdf2Sync(rawPasswordString, saltKey, hashIterations, 64, 'sha512')
-    return key.toString("hex")
+    const key = await pbkdf2(rawPasswordString, saltKey, hashIterations, 64, 'sha512')
+    return key
 }
 
 export async function isMatchingPassword(enteredRawPassword, storedHash) {
-    const hash = pbkdf2Sync(enteredRawPassword, saltKey, hashIterations, 64, 'sha512').toString("hex")
+    const hash = await pbkdf2(enteredRawPassword, saltKey, hashIterations, 64, 'sha512')
     return storedHash === hash
 }
 
