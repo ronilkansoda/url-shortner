@@ -2,9 +2,10 @@ import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { desc, eq, sql as sqld } from "drizzle-orm";
 import * as schema from './schema'
-import { LinksTable, VisitsTable } from "./schema";
+import { LinksTable, VisitsTable,UsersTable } from "./schema";
 import randomShortString from "./randomShortString";
 import { getSessionUser } from "./session";
+import { hashPassword } from "./passwordUtils";
 
 
 const sql = neon(process.env.DATABASE_URL)
@@ -136,4 +137,36 @@ export async function getMinLinksAndVisits(limit, offset) {
         }
 
     });
+}
+export async function registerUser(newUserData) {
+    const { username } = newUserData
+    const toInsertData = {
+        username: username,
+        password: await hashPassword(newUserData.password)
+    }
+    if (newUserData.email) {
+        toInsertData['email'] = newUserData.email
+    }
+
+    let response = { message: `Failed to register. Please try again.` }
+    let responseStatus = 400
+    try {
+        let dbResponse = await db.insert(UsersTable).values(toInsertData).returning()
+        let dbResponseData = dbResponse[0]
+        response = [{
+            id: dbResponseData.id,
+            username: dbResponseData.username,
+            createdAt: dbResponseData.createdAt
+        }]
+        responseStatus = 201
+    } catch ({ name, message }) {
+        if (`${message}`.includes("duplicate key value violates unique constraint")) {
+            response = { message: `${username} is taken.` }
+        }
+    }
+    return { data: response, status: responseStatus }
+}
+
+export async function getUserByUsername(username) {
+    return await db.select().from(UsersTable).where(eq(UsersTable.username, username))
 }
