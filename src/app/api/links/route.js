@@ -32,8 +32,13 @@ export async function POST(req) {
         return NextResponse.json({ message: `${url} is not valid.` }, { status: 400 });
     } else {
         console.log(`Valid URL: ${url}`);  // Log valid URL
+
         const dbResponse = await addLink(url);
-        return NextResponse.json(dbResponse, { status: 201 });
+
+        const responseData = dbResponse && dbResponse.data ? dbResponse.data : {}
+        const responseStatus = dbResponse && dbResponse.status ? dbResponse.status : 500;
+
+        return NextResponse.json(responseData, { status: responseStatus });
 
     }
 }

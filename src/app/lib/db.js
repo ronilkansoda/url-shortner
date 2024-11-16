@@ -38,7 +38,19 @@ configureDatabase().catch(err => console.log("db config err ", err))
 export async function addLink(url) {
     const short = randomShortString();
     const newLinks = { url: url, short: short };
-    return await db.insert(LinksTable).values(newLinks).returning();  // returning gives row added
+    let response = [{ message: `${url} is not valid. Please try again` }];
+    let responseStatus = 400;
+
+    try {
+        response = await db.insert(LinksTable).values(newLinks).returning();  // returning gives row added
+        responseStatus = 201;
+    } catch ({ name, message }) {
+        console.log(name, message)
+        if (`${message}`.includes("duplicate key value violates unique constraint")) {
+            response = [{ message: `${url} has already added. Please check the list` }]
+        }
+    }
+    return { data: response, status: responseStatus };
 }
 
 export async function getLinks(limit, offset) {
