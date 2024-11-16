@@ -1,16 +1,14 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
-const webpack = require("webpack");
+import webpack from "webpack";
 
-module.exports = {
+const nextConfig = {
     webpack: (config) => {
         config.resolve = {
             ...config.resolve,
             fallback: {
                 ...config.resolve.fallback,
-                crypto: require.resolve("crypto-browserify"),
-                stream: require.resolve("stream-browserify"),
-                buffer: require.resolve("buffer"),
+                crypto: "crypto-browserify",
+                stream: "stream-browserify",
+                buffer: "buffer",
             },
         };
 

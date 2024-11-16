@@ -20,7 +20,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "swr": "^2.2.5",
-    "tsx": "^4.19.2"
+    "tsx": "^4.19.2",
+    "webpack": "^5.96.1"
   },
   "devDependencies": {
     "buffer": "^6.0.3",
