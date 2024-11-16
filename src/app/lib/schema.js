@@ -1,5 +1,5 @@
-import { timestamp, uniqueIndex, text, pgTable, serial, varchar } from "drizzle-orm/pg-core";
-
+import { relations } from "drizzle-orm";
+import { timestamp, uniqueIndex, text, pgTable, serial, varchar, integer } from "drizzle-orm/pg-core";
 
 export const LinksTable = pgTable("links", {
     id: serial('id').primaryKey().notNull(),
@@ -11,3 +11,26 @@ export const LinksTable = pgTable("links", {
         urlIndex: uniqueIndex("url_idx").on(links.url)
     }
 })
+
+// links --> link -> has many visits
+export const LinksTableRelations = relations(LinksTable, ({ many, one }) => ({
+    visits: many(VisitsTable),
+    // user: one(UsersTable, {
+    //     fields: [LinksTable.userId],
+    //     references: [UsersTable.id]
+    // })
+}))
+
+export const VisitsTable = pgTable("visits", {
+    id: serial('id').primaryKey().notNull(),
+    linkId: integer('link_id').notNull().references(() => LinksTable.id),
+    createdAt: timestamp("created_at").defaultNow()
+})
+
+// visits --> visit -> one link
+export const VisitsTableRelations = relations(VisitsTable, ({ many, one }) => ({
+    link: one(LinksTable, {
+        fields: [VisitsTable.linkId],
+        references: [LinksTable.id]
+    })
+}))
