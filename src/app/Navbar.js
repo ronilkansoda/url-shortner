@@ -37,7 +37,7 @@ const Navbar = () => {
         <div className="relative flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-white text-lg font-bold">Ronil's Url-Shortner</h1>
+            <h1 className="text-white text-lg font-bold">Ronil&apos;s Url-Shortner</h1>
           </div>
 
           {/* Links for larger screens */}
