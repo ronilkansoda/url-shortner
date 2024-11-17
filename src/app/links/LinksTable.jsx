@@ -46,15 +46,13 @@ export default function LinksTable() {
     if (!data) return <div>Loading...</div>;
     console.log(data);
 
-    const didSubmit = (newItems) => {
+    const didSubmit = () => {
         mutate()
     }
 
     return (
-        <div className='p-12'>
-
+        <div className="p-6 sm:p-12">
             <LinkCreateFoarm didSubmit={didSubmit} />
-
 
             <div className="min-h-screen bg-gray-50">
                 <div className="max-w-4xl mx-auto px-4">
@@ -65,21 +63,34 @@ export default function LinksTable() {
                             <table className="w-full text-sm text-left text-gray-600">
                                 <thead className="text-xs uppercase bg-gray-100 text-gray-700">
                                     <tr>
-                                        <th scope="col" className="px-6 py-2">ID</th>
-                                        <th scope="col" className="px-6 py-2">URL</th>
-                                        <th scope="col" className="px-6 py-2">Short URL</th>
-                                        <th scope="col" className="px-6 py-2">Created At</th>
+                                        <th scope="col" className="px-4 py-2 sm:px-6">ID</th>
+                                        <th scope="col" className="px-4 py-2 sm:px-6">URL</th>
+                                        <th scope="col" className="px-4 py-2 sm:px-6">Short URL</th>
+                                        <th scope="col" className="px-4 py-2 sm:px-6">Created At</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {data.map((link) => (
                                         <tr key={link.id} className="border-b hover:bg-gray-50">
-                                            <td className="px-6 py-3 font-medium text-gray-900">{link.id}</td>
-                                            <td className="px-6 py-3 text-blue-500 truncate">
-                                                <a href={link.url} target="_blank" rel="noopener noreferrer">{link.url}</a>
+                                            <td className="px-4 py-3 sm:px-6 font-medium text-gray-900">{link.id}</td>
+                                            <td className="px-4 py-3 sm:px-6 max-w-[200px] truncate overflow-hidden text-blue-500">
+                                                <a href={link.url} target="_blank" rel="noopener noreferrer" title={link.url}>
+                                                    {link.url}
+                                                </a>
                                             </td>
-                                            <td className="px-6 py-3">{link.short || "N/A"}</td>
-                                            <td className="px-6 py-3">{new Date(link.createdAt).toLocaleString()}</td>
+                                            {/* <td className="px-4 py-3 sm:px-6">{link.short || "N/A"}</td> */}
+                                            <td className="px-4 py-3 sm:px-6 text-blue-500 truncate max-w-[200px]">
+                                                <a
+                                                    href={`https://url-shortner-ronils-projects.vercel.app/${link.short}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    title={`https://url-shortner-ronils-projects.vercel.app/${link.short}`}
+                                                >
+                                                    {`https://url-shortner-ronils-projects.vercel.app/${link.short}`}
+                                                </a>
+                                            </td>
+
+                                            <td className="px-4 py-3 sm:px-6">{new Date(link.createdAt).toLocaleString()}</td>
                                         </tr>
                                     ))}
                                 </tbody>
