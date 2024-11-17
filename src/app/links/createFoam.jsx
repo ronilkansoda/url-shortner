@@ -43,7 +43,7 @@ export default function LinkCreateFoarm({ didSubmit }) {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} >
                 <input
                     className="p-2 border-black border-2 rounded-md"
                     type="text"

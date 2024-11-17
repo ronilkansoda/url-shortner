@@ -3,15 +3,45 @@
 // import { getLinks } from "../lib/db";  // it was directly using the function from the db 
 import useSWR from 'swr';
 import LinkCreateFoarm from './createFoam';
+import { useState, useEffect } from 'react';
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 // const fetcher = async (url) => (await fetch(url)).ok ? await fetch(url).then(res => res.json()) : Promise.reject('Failed to fetch data');
 
 export default function LinksTable() {
     const endpoint = "/api/links";
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const { data, error, mutate } = useSWR(endpoint, fetcher, { refreshInterval: 1000 }); // Fetch only when user is active from links api
+    // const { data, error, mutate } = useSWR(endpoint, fetcher, { refreshInterval: 1000 }); // Fetch only when user is active from links api
+    const { data, error, mutate } = useSWR(isLoggedIn ? endpoint : null, fetcher, { refreshInterval: 1000 }); // Only fetch data if logged in
 
+    useEffect(() => {
+        // Check session status
+        const checkSession = async () => {
+            try {
+                const res = await fetch("/api/session"); // Assuming you create an API route for session check
+                if (res.ok) {
+                    const { user } = await res.json();
+                    setIsLoggedIn(!!user); // Set logged-in status based on response
+                } else {
+                    setIsLoggedIn(false);
+                }
+            } catch (error) {
+                console.error("Error checking session:", error);
+                setIsLoggedIn(false);
+            }
+        };
+
+        checkSession();
+    }, []);
+
+    if (!isLoggedIn) {
+        return (
+            <div className="p-12 text-center">
+                <p className="text-gray-800 text-3xl">Session Expired!! Login again</p>
+            </div>
+        );
+    }
     if (error) return <div>Failed to load</div>;
     if (!data) return <div>Loading...</div>;
     console.log(data);
@@ -20,13 +50,13 @@ export default function LinksTable() {
         mutate()
     }
 
-
     return (
-        <>
+        <div className='p-12'>
+
             <LinkCreateFoarm didSubmit={didSubmit} />
 
 
-            <div className="min-h-screen bg-gray-50 py-8">
+            <div className="min-h-screen bg-gray-50">
                 <div className="max-w-4xl mx-auto px-4">
                     <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Links Table</h1>
 
@@ -62,6 +92,6 @@ export default function LinksTable() {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
