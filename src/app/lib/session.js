@@ -6,7 +6,7 @@ const secret = jose.base64url.decode(process.env.JOSE_SESSION_KEY)
 // const secret = new TextDecoder().encode(process.env.JOSE_SESSION_KEY);
 const issuer = 'urn:example:issuer';
 const audience = 'urn:example:audience';
-const expiresAt = '5min';
+const expiresAt = '6min';
 
 export const encodeUserSession = async (userId) => {
     const jwt = await new jose.EncryptJWT({ 'user': userId })
